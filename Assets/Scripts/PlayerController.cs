@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D characterRigdbody;
     private float horizontalInput;
+
     [SerializeField]private float characterSpeed = 4.5f;
     [SerializeField]private float jumpforce = 5f;
 
@@ -26,7 +27,17 @@ public class PlayerController : MonoBehaviour
     {
         horizontalInput = Input.GetAxis("Horizontal");
 
-        if(Input.GetButtonDown("Jump"))
+        if(horizontalInput < 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 180, 0);
+        }
+
+        else if(horizontalInput > 0)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
+
+        if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded)
         {
             characterRigdbody.AddForce(Vector2.up * jumpforce, ForceMode2D.Impulse);
         }
