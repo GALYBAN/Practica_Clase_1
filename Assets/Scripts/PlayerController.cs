@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D characterRigdbody;
     private float horizontalInput;
+    public static Animator characterAnimator;
+
+    [SerializeField]private int healthPoints = 5;
 
     [SerializeField]private float characterSpeed = 4.5f;
     [SerializeField]private float jumpforce = 5f;
@@ -14,6 +17,8 @@ public class PlayerController : MonoBehaviour
     void Awake()
     {
         characterRigdbody = GetComponent<Rigidbody2D>();
+
+        characterAnimator = GetComponent<Animator>();
         
     }
 
@@ -30,11 +35,18 @@ public class PlayerController : MonoBehaviour
         if(horizontalInput < 0)
         {
             transform.rotation = Quaternion.Euler(0, 180, 0);
+            characterAnimator.SetBool("IsRunning", true);
         }
 
         else if(horizontalInput > 0)
         {
             transform.rotation = Quaternion.Euler(0, 0, 0);
+            characterAnimator.SetBool("IsRunning", true);
+        }
+
+        else
+        {
+            characterAnimator.SetBool("IsRunning", false);
         }
 
         if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded)
@@ -52,5 +64,33 @@ public class PlayerController : MonoBehaviour
         
 
     }
+    void TakeDamage()
+    {
+        healthPoints--;
+        characterAnimator.SetTrigger("IsHurt");
+        if(healthPoints == 0)
+        {
+            Die();
+        }
 
+    }
+
+     void Die()
+    {
+        characterAnimator.SetBool("IsDead", true);
+        Destroy(gameObject, 0.45f);
+    }
+
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.layer == 8)
+        {
+            TakeDamage();            
+        }
+
+        if(collision.gameObject.layer == 7)
+        {
+            Die();
+        }
+    }
 }
