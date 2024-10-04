@@ -6,17 +6,43 @@ public class Mimic : MonoBehaviour
 {
     private Animator mimicAnimator;
 
+    [SerializeField]private int healthPoints = 3;
+
     void Awake()
     {
         mimicAnimator = GetComponent<Animator>();
 
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collision.gameObject.CompareTag("Player"))
+        if(collider.gameObject.CompareTag("Player"))
         {
-            mimicAnimator.SetTrigger("Bite");
+            AttackMimic();
         }
+    }
+
+    void AttackMimic()
+    {
+        mimicAnimator.SetTrigger("Bite");
+    }
+
+    public void TakeDamageMimic()
+    {
+        healthPoints--;
+
+        if(healthPoints <= 0)
+        {
+            DieMimic();
+            return;
+        }
+
+        mimicAnimator.SetTrigger("IsHurt");
+    }
+
+    void DieMimic()
+    {
+        mimicAnimator.SetTrigger("IsDead");
+        Destroy(gameObject, 0.60f);
     }
 }
