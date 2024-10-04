@@ -15,7 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private float characterSpeed = 4.5f;
     [SerializeField]private float jumpforce = 5f;
 
-    private bool isAttacking;
+    private bool isAttackingWhileMoving;
 
     [SerializeField] private Transform attackHitbox;
 
@@ -42,12 +42,16 @@ public class PlayerController : MonoBehaviour
 
         Movement();
 
-        if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded && !isAttacking)
+        if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded && !isAttackingWhileMoving)
         {
             Jump();
         }
 
-        if(Input.GetButtonDown("Fire1") && GroundSensor.isGrounded)
+        if(Input.GetButtonDown("Fire1") && GroundSensor.isGrounded && horizontalInput != 0)
+        {
+            AttackWhileMoving();
+        }
+        else if(Input.GetButtonUp("Fire1") && GroundSensor.isGrounded && horizontalInput == 0)
         {
             Attack();
         }
@@ -62,16 +66,17 @@ public class PlayerController : MonoBehaviour
     void Movement()
     {
 
+        if(horizontalInput == 0 && isAttackingWhileMoving)
+        {
+            horizontalInput = 0;
+            return;
+        }
+
         horizontalInput = Input.GetAxis("Horizontal");
 
         if(horizontalInput == 0)
         {
             characterAnimator.SetBool("IsRunning", false);
-        }
-
-        if(isAttacking)
-        {
-            return;
         }
         else if(horizontalInput < 0)
         {
@@ -117,12 +122,19 @@ public class PlayerController : MonoBehaviour
     {
         StartCoroutine(AttackingAnimation());
         characterAnimator.SetTrigger("IsAttacking");
+    }
+
+    void AttackWhileMoving()
+    {
+        StartCoroutine(AttackingAnimation());
+        characterAnimator.SetTrigger("IsAttackingWhileMoving");
 
     }
 
     IEnumerator AttackingAnimation()
     {
-        isAttacking = true;
+        
+        isAttackingWhileMoving = true;
 
         yield return new WaitForSeconds(0.3f);
 
@@ -139,7 +151,8 @@ public class PlayerController : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        isAttacking = false;
+        isAttackingWhileMoving = false;
+
     }
 
     void TakeDamage()
@@ -153,9 +166,6 @@ public class PlayerController : MonoBehaviour
         }
 
         characterAnimator.SetTrigger("IsHurt");
-
-        
-
     }
 
      void Die()
