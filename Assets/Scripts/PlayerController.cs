@@ -36,7 +36,6 @@ public class PlayerController : MonoBehaviour
     {
         // characterRigdbody.AddForce(Vector2.up * jumpforce);
     }
-
     void Update()
     {
 
@@ -157,7 +156,9 @@ public class PlayerController : MonoBehaviour
 
     void TakeDamage()
     {
-        healthPoints--;
+        healthPoints -- ;
+
+        Debug.Log(healthPoints);
 
         if(healthPoints <= 0)
         {
@@ -176,14 +177,17 @@ public class PlayerController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        if(collision.gameObject.layer == 8)
-        {
-            TakeDamage();            
-        }
-
         if(collision.gameObject.layer == 7)
         {
             Die();
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if(collider.gameObject.layer == 8)
+        {
+            TakeDamage();            
         }
     }
 
