@@ -53,6 +53,12 @@ public class PlayerController : MonoBehaviour
         else if(Input.GetButtonUp("Fire1") && GroundSensor.isGrounded && horizontalInput == 0)
         {
             Attack();
+            SoundManager.instance.PlaySFX(SoundManager.instance.swordAttack[Random.Range(0, SoundManager.instance.swordAttack.Length)]);
+        }
+
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            GameManager.instance.Pause();
         }
 
     }
@@ -154,9 +160,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    void TakeDamage()
+    void TakeDamage(int damage)
     {
-        healthPoints -- ;
+        healthPoints -= damage;
 
         Debug.Log(healthPoints);
 
@@ -181,13 +187,14 @@ public class PlayerController : MonoBehaviour
         {
             Die();
         }
+
     }
 
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if(collider.gameObject.layer == 8)
+         if(collider.gameObject.layer == 8)
         {
-            TakeDamage();            
+            TakeDamage(1);            
         }
     }
 
