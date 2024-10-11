@@ -6,12 +6,13 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
 
-    private AudioSource _audioSource;
+    private AudioSource _audioSourceGlobal;
 
-    public  AudioClip coinAudio;
-    public  AudioClip jumpAudio;
-    public  AudioClip attackAudio;
-    public  AudioClip hurtAudio;
+    public AudioClip coinAudio;
+    public AudioClip jumpAudio;
+    public AudioClip attackAudio;
+    public AudioClip hurtAudio;
+    public AudioClip mimicAudio;
     public AudioClip[] swordAttack;
 
     [SerializeField] private AudioClip _coinAudio; 
@@ -26,12 +27,17 @@ public class SoundManager : MonoBehaviour
             instance = this;
         }
 
-        _audioSource = GetComponent<AudioSource>();
+        _audioSourceGlobal = GetComponent<AudioSource>();
     }
 
-    public void PlaySFX(AudioClip clip) 
+    public void PlaySFX(AudioSource source, AudioClip clip) 
     {
-        _audioSource.PlayOneShot(clip);
+        source.PlayOneShot(clip);
+    }
+
+    public void PlayLoop(AudioSource sourceLoop, AudioClip clipLoop)
+    {
+        sourceLoop.Play(clipLoop);
     }
 
 }

@@ -5,12 +5,18 @@ using UnityEngine;
 public class Mimic : MonoBehaviour
 {
     private Animator mimicAnimator;
+    private AudioSource _audioSourceMimic;
 
     [SerializeField]private int healthPoints = 3;
 
     void Awake()
     {
         mimicAnimator = GetComponent<Animator>();
+        _audioSourceMimic = GetComponent<AudioSource>();
+    }
+
+    void Start()
+    {
 
     }
 
@@ -25,6 +31,7 @@ public class Mimic : MonoBehaviour
     void AttackMimic()
     {
         mimicAnimator.SetTrigger("Bite");
+        SoundManager.instance.PlaySFX(_audioSourceMimic, SoundManager.instance.mimicAudio)
     }
 
     public void TakeDamageMimic()
