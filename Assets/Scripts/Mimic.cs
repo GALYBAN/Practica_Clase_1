@@ -17,7 +17,7 @@ public class Mimic : MonoBehaviour
 
     void Start()
     {
-
+        SoundManager.instance.PlayLoop(_audioSourceMimic, SoundManager.instance.mimicLoopAudio);
     }
 
     void OnCollisionEnter2D(Collision2D collider)
@@ -31,7 +31,7 @@ public class Mimic : MonoBehaviour
     void AttackMimic()
     {
         mimicAnimator.SetTrigger("Bite");
-        SoundManager.instance.PlaySFX(_audioSourceMimic, SoundManager.instance.mimicAudio)
+        SoundManager.instance.PlaySFX(_audioSourceMimic, SoundManager.instance.mimicAudio);
     }
 
     public void TakeDamageMimic()

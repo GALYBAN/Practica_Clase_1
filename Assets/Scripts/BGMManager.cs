@@ -5,7 +5,7 @@ using UnityEngine;
 public class BGMManager : MonoBehaviour
 {
     public static BGMManager instance;
-    private AudioSource _audioSource;
+    [HideInInspector] public AudioSource _audioSourceBGM;
     public AudioClip BGAudioClip;
  void Awake()
  {
@@ -18,28 +18,28 @@ public class BGMManager : MonoBehaviour
         instance = this;
     }
 
-    _audioSource = GetComponent<AudioSource>();
+    _audioSourceBGM = GetComponent<AudioSource>();
 
-    _audioSource.loop = true;
-    _audioSource.mute = false;
-    _audioSource.volume = 1;
+    _audioSourceBGM.loop = true;
+    _audioSourceBGM.mute = false;
+    _audioSourceBGM.volume = 0.5f;
     
  }
 
     public void PlayBGM(AudioClip clip)
     {
-        _audioSource.clip = clip;
-        _audioSource.Play();
+        _audioSourceBGM.clip = clip;
+        _audioSourceBGM.Play();
     }
 
     public void StopBGM()
     {
-        _audioSource.Stop();
+        _audioSourceBGM.Stop();
     }
 
     public void PauseBGM()
     {
-        _audioSource.Pause();
+        _audioSourceBGM.Pause();
     }
 
 }

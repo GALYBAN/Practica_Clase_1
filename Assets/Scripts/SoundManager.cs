@@ -6,16 +6,16 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager instance;
 
-    private AudioSource _audioSourceGlobal;
+    [HideInInspector] public AudioSource _audioSourceGlobal;
 
     public AudioClip coinAudio;
     public AudioClip jumpAudio;
-    public AudioClip attackAudio;
     public AudioClip hurtAudio;
+
     public AudioClip mimicAudio;
+    public AudioClip mimicLoopAudio;
     public AudioClip[] swordAttack;
 
-    [SerializeField] private AudioClip _coinAudio; 
     void Awake()
     {
         if(instance != null && instance != this)
@@ -34,10 +34,10 @@ public class SoundManager : MonoBehaviour
     {
         source.PlayOneShot(clip);
     }
-
     public void PlayLoop(AudioSource sourceLoop, AudioClip clipLoop)
     {
-        sourceLoop.Play(clipLoop);
+        sourceLoop.clip = clipLoop;
+        sourceLoop.Play();
     }
 
 }

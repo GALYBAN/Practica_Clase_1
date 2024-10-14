@@ -15,13 +15,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField]private float characterSpeed = 4.5f;
     [SerializeField]private float jumpforce = 5f;
 
-    private bool isAttackingWhileMoving;
+    private bool isAttacking = false;
 
     [SerializeField] private Transform attackHitbox;
 
     [SerializeField] private float attackRadius;
 
-    public Mimic mimicScript;
+    private AudioSource _audioSourcePlayer;
+
+
+    //public Mimic mimicScript;
 
     void Awake()
     {
@@ -29,6 +32,7 @@ public class PlayerController : MonoBehaviour
 
         characterAnimator = GetComponent<Animator>();
         
+        _audioSourcePlayer = GetComponent<AudioSource>();
     }
 
     // Start is called before the first frame update
@@ -41,19 +45,18 @@ public class PlayerController : MonoBehaviour
 
         Movement();
 
-        if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded && !isAttackingWhileMoving)
+        if(Input.GetButtonDown("Jump") && GroundSensor.isGrounded && !isAttacking)
         {
             Jump();
         }
 
         if(Input.GetButtonDown("Fire1") && GroundSensor.isGrounded && horizontalInput != 0)
         {
-            AttackWhileMoving();
+            //AttackWhileMoving();
         }
         else if(Input.GetButtonUp("Fire1") && GroundSensor.isGrounded && horizontalInput == 0)
         {
             Attack();
-            SoundManager.instance.PlaySFX(SoundManager.instance.swordAttack[Random.Range(0, SoundManager.instance.swordAttack.Length)]);
         }
 
         if(Input.GetKeyDown(KeyCode.P))
@@ -71,7 +74,7 @@ public class PlayerController : MonoBehaviour
     void Movement()
     {
 
-        if(horizontalInput == 0 && isAttackingWhileMoving)
+        if(horizontalInput == 0 && isAttacking)
         {
             horizontalInput = 0;
             return;
@@ -123,7 +126,7 @@ public class PlayerController : MonoBehaviour
         characterRigdbody.AddForce(Vector2.up * jumpforce, ForceMode2D.Impulse);
     }
 
-    void Attack()
+    /*void Attack()
     {
         StartCoroutine(AttackingAnimation());
         characterAnimator.SetTrigger("IsAttacking");
@@ -158,6 +161,36 @@ public class PlayerController : MonoBehaviour
 
         isAttackingWhileMoving = false;
 
+    }*/
+
+    void StartAttack()
+    {
+        isAttacking = true;
+        characterAnimator.SetTrigger("IsAttacking");
+        SoundManager.instance.PlaySFX(_audioSourcePlayer, SoundManager.instance.swordAttack[Random.Range(0, SoundManager.instance.swordAttack.Length)]);
+
+    }
+
+
+    void Attack()
+    {
+        Collider2D[] collider = Physics2D.OverlapCircleAll(attackHitbox.position, attackRadius);
+         foreach(Collider2D hit in collider)
+        {
+            if(hit.gameObject.CompareTag("Mimic"))
+            {
+                Rigidbody2D enemyRigdbody = hit.gameObject.GetComponent<Rigidbody2D>();
+                enemyRigdbody.AddForce(transform.right + transform.up * 2, ForceMode2D.Impulse);
+                hit.gameObject.GetComponent<Mimic>().TakeDamageMimic(); 
+            }
+        }
+        
+        characterAnimator.SetTrigger("IsAttacking");
+
+    }
+    void EndAttack()
+    {
+        isAttacking = false;
     }
 
     void TakeDamage(int damage)
