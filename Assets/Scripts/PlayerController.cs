@@ -10,7 +10,8 @@ public class PlayerController : MonoBehaviour
     private float horizontalInput;
     public static Animator characterAnimator;
 
-    [SerializeField]private int healthPoints = 5;
+    [SerializeField] private int maxHealth = 5;
+    [SerializeField]private int currentHealth;
 
     [SerializeField]private float characterSpeed = 4.5f;
     [SerializeField]private float jumpforce = 5f;
@@ -39,6 +40,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         // characterRigdbody.AddForce(Vector2.up * jumpforce);
+        currentHealth = maxHealth;
+        GameManager.instance.SetHealthBar(maxHealth);
+
     }
     void Update()
     {
@@ -52,11 +56,13 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetButtonDown("Fire1") && GroundSensor.isGrounded && horizontalInput != 0)
         {
-            //AttackWhileMoving();
+            StartAttack();
+            Attack();
+            EndAttack();
         }
         else if(Input.GetButtonUp("Fire1") && GroundSensor.isGrounded && horizontalInput == 0)
         {
-            Attack();
+            
         }
 
         if(Input.GetKeyDown(KeyCode.P))
@@ -168,7 +174,6 @@ public class PlayerController : MonoBehaviour
         isAttacking = true;
         characterAnimator.SetTrigger("IsAttacking");
         SoundManager.instance.PlaySFX(_audioSourcePlayer, SoundManager.instance.swordAttack[Random.Range(0, SoundManager.instance.swordAttack.Length)]);
-
     }
 
 
@@ -195,17 +200,29 @@ public class PlayerController : MonoBehaviour
 
     void TakeDamage(int damage)
     {
-        healthPoints -= damage;
+        currentHealth -= damage;
 
-        Debug.Log(healthPoints);
+        GameManager.instance.UpdateHealtBar(currentHealth);
 
-        if(healthPoints <= 0)
+        Debug.Log(currentHealth);
+
+        if(currentHealth <= 0)
         {
             Die();
             return;
         }
 
         characterAnimator.SetTrigger("IsHurt");
+    }
+    
+    void Health(int damage)
+    {
+        currentHealth += damage;
+
+        GameManager.instance.UpdateHealtBar(currentHealth);
+
+        Debug.Log(currentHealth);
+
     }
 
      void Die()
@@ -228,6 +245,11 @@ public class PlayerController : MonoBehaviour
          if(collider.gameObject.layer == 8)
         {
             TakeDamage(1);            
+        }
+
+        if(collider.gameObject.layer == 10 && currentHealth < maxHealth)
+        {
+            Health(1);            
         }
     }
 

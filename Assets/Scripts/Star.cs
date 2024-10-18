@@ -32,7 +32,6 @@ public class Star : MonoBehaviour
             {
                 starUI.UnlockStar(2);
             }
-            GameManager.instance.AddStar();
             SoundManager.instance.PlaySFX(SoundManager.instance._audioSourceGlobal, SoundManager.instance.coinAudio);
             Destroy(gameObject);
         }     

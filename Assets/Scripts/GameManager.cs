@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GameManager : MonoBehaviour
     private bool isPaused;
     [SerializeField] GameObject _pauseCanvas;
     [SerializeField] Text _coinText;
+
+    [SerializeField] Slider _healthSlider;
     private Animator _pausePanelAnimator;
 
     public bool pauseAnimation = false;
@@ -72,9 +75,25 @@ public class GameManager : MonoBehaviour
         _coinText.text = coins.ToString();
     }    
 
-    public void AddStar()
+    public void SetHealthBar(int maxHealth)
     {
+        _healthSlider.maxValue = maxHealth;
+        _healthSlider.value = maxHealth;
+    }
 
+    public void UpdateHealtBar(int health)
+    {
+        _healthSlider.value = health;
+    }
+
+    public void AddHealth(int health)
+    {
+        _healthSlider.value += health;
+    }
+
+    public void SceneLoader(string sceneName)
+    {
+        SceneManager.LoadScene(sceneName);
     }
 
 }

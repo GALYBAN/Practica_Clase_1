@@ -7,7 +7,7 @@ public class Mimic : MonoBehaviour
     private Animator mimicAnimator;
     private AudioSource _audioSourceMimic;
 
-    [SerializeField]private int healthPoints = 3;
+    [SerializeField]private int currentHealth = 3;
 
     void Awake()
     {
@@ -36,9 +36,9 @@ public class Mimic : MonoBehaviour
 
     public void TakeDamageMimic()
     {
-        healthPoints--;
+        currentHealth--;
 
-        if(healthPoints <= 0)
+        if(currentHealth <= 0)
         {
             DieMimic();
             return;
