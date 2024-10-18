@@ -9,9 +9,13 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     private int coins = 0;
 
+
     private bool isPaused;
     [SerializeField] GameObject _pauseCanvas;
     [SerializeField] Text _coinText;
+    private Animator _pausePanelAnimator;
+
+    public bool pauseAnimation = false;
 
     void Start()
     {
@@ -29,26 +33,48 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+
+        _pausePanelAnimator = _pauseCanvas.GetComponentInChildren<Animator>();
     }
 
     public void Pause()
     {
-        if(!isPaused)
+        if(!isPaused && !pauseAnimation)
         {
             Time.timeScale = 0;
             isPaused = true;
             _pauseCanvas.SetActive(true);
         }
-        else
+        else if(isPaused && !pauseAnimation)
         {
-            Time.timeScale = 1;
-            isPaused = false;
-            _pauseCanvas.SetActive(false);  
+            pauseAnimation = true;
+
+             StartCoroutine(Resume());
         }
     }
+
+    IEnumerator Resume()
+    {
+        _pausePanelAnimator.SetBool("Close", true);
+
+        yield return new WaitForSecondsRealtime(1);
+        
+        Time.timeScale = 1;
+        _pauseCanvas.SetActive(false);
+        isPaused = false;
+        pauseAnimation=false;
+
+    }
+
     public void AddCoin()
     {
         coins++;
         _coinText.text = coins.ToString();
     }    
+
+    public void AddStar()
+    {
+
+    }
+
 }

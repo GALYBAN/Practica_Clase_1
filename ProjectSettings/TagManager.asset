@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Mimic
+  - Star1
+  - Star2
+  - Star3
   layers:
   - Default
   - TransparentFX

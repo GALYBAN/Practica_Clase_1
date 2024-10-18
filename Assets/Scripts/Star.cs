@@ -6,10 +6,13 @@ public class Star : MonoBehaviour
 {
     private bool interactable;
 
+    private Animator _starAnimator;
+    public StarUI starUI;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        _starAnimator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -17,7 +20,19 @@ public class Star : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.E) && interactable)
         {
-            GameManager.instance.AddCoin();
+            if (gameObject.CompareTag("Star1"))
+            {
+                starUI.UnlockStar(0);
+            }
+            else if (gameObject.CompareTag("Star2"))
+            {
+                starUI.UnlockStar(1);
+            }
+            else if (gameObject.CompareTag("Star3"))
+            {
+                starUI.UnlockStar(2);
+            }
+            GameManager.instance.AddStar();
             SoundManager.instance.PlaySFX(SoundManager.instance._audioSourceGlobal, SoundManager.instance.coinAudio);
             Destroy(gameObject);
         }     
@@ -25,6 +40,7 @@ public class Star : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D collider)
     {
+            
         if(collider.gameObject.CompareTag("Player"))
         {
             interactable = true;
