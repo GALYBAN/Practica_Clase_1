@@ -27,6 +27,8 @@ public class SoundManager : MonoBehaviour
             instance = this;
         }
 
+        DontDestroyOnLoad(gameObject);
+
         _audioSourceGlobal = GetComponent<AudioSource>();
     }
 
@@ -39,5 +41,6 @@ public class SoundManager : MonoBehaviour
         sourceLoop.clip = clipLoop;
         sourceLoop.Play();
     }
+
 
 }

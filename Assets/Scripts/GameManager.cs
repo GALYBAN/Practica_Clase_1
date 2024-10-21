@@ -24,8 +24,6 @@ public class GameManager : MonoBehaviour
     {
         BGMManager.instance.PlayBGM(BGMManager.instance.BGAudioClip);
     }
-
-
     void Awake()
     {
         if(instance != null && instance != this)
@@ -95,5 +93,22 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene(sceneName);
     }
+
+    /*float progresoDeCarga;
+
+    IEnumerator LoadAsync(string sceneName)
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+        while (!asyncLoad.isDone)
+        {
+            if(asyncLoad.progress <= 0.9f)
+            {
+                progresoDeCarga = asyncLoad.progress;
+                Debug.Log(progresoDeCarga);
+            }
+            yield return null;
+        }
+    }*/
 
 }

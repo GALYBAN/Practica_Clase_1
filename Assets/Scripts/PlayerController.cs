@@ -56,13 +56,11 @@ public class PlayerController : MonoBehaviour
 
         if(Input.GetButtonDown("Fire1") && GroundSensor.isGrounded && horizontalInput != 0)
         {
-            StartAttack();
-            Attack();
-            EndAttack();
+
         }
-        else if(Input.GetButtonUp("Fire1") && GroundSensor.isGrounded && horizontalInput == 0)
+        else if(Input.GetButtonUp("Fire1") && GroundSensor.isGrounded)
         {
-            
+            StartAttack();
         }
 
         if(Input.GetKeyDown(KeyCode.P))
@@ -72,11 +70,11 @@ public class PlayerController : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
         characterRigdbody.velocity = new Vector2(horizontalInput * characterSpeed, characterRigdbody.velocity.y);
     }
+
     void Movement()
     {
 
@@ -189,8 +187,6 @@ public class PlayerController : MonoBehaviour
                 hit.gameObject.GetComponent<Mimic>().TakeDamageMimic(); 
             }
         }
-        
-        characterAnimator.SetTrigger("IsAttacking");
 
     }
     void EndAttack()
