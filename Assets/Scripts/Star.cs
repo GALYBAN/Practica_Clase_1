@@ -23,16 +23,19 @@ public class Star : MonoBehaviour
             if (gameObject.CompareTag("Star1"))
             {
                 starUI.UnlockStar(0);
+                GameManager.instance.AddStar();
             }
             else if (gameObject.CompareTag("Star2"))
             {
                 starUI.UnlockStar(1);
+                GameManager.instance.AddStar();
             }
             else if (gameObject.CompareTag("Star3"))
             {
                 starUI.UnlockStar(2);
+                GameManager.instance.AddStar();
             }
-            SoundManager.instance.PlaySFX(SoundManager.instance._audioSourceGlobal, SoundManager.instance.coinAudio);
+            SoundManager.instance.PlaySFX(SoundManager.instance._audioSourceGlobal, SoundManager.instance.starAudio);
             Destroy(gameObject);
         }     
     }

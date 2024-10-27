@@ -1,12 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 
 public class BGMManager : MonoBehaviour
 {
     public static BGMManager instance;
     [HideInInspector] public AudioSource _audioSourceBGM;
-    public AudioClip BGAudioClip;
+    
+    public AudioClip[] bgmClips;
+    public string[] sceneNames;
+
+    void Start()
+    {
+        Scene currentScene = SceneManager.GetActiveScene();
+        PlayBGM(currentScene.name);
+    }
+
  void Awake()
  {
     if(instance != null && instance != this)
@@ -26,20 +37,15 @@ public class BGMManager : MonoBehaviour
     
  }
 
-    public void PlayBGM(AudioClip clip)
+    public void PlayBGM(string sceneName)
     {
-        _audioSourceBGM.clip = clip;
-        _audioSourceBGM.Play();
-    }
-
-    public void StopBGM()
-    {
-        _audioSourceBGM.Stop();
-    }
-
-    public void PauseBGM()
-    {
-        _audioSourceBGM.Pause();
+        int index = System.Array.IndexOf(sceneNames, sceneName);
+        if (index != -1)
+        {  
+            _audioSourceBGM.Stop();
+            _audioSourceBGM.clip = bgmClips[index];
+            _audioSourceBGM.Play();
+        }
     }
 
 }

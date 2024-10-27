@@ -171,7 +171,6 @@ public class PlayerController : MonoBehaviour
     {
         isAttacking = true;
         characterAnimator.SetTrigger("IsAttacking");
-        SoundManager.instance.PlaySFX(_audioSourcePlayer, SoundManager.instance.swordAttack[Random.Range(0, SoundManager.instance.swordAttack.Length)]);
     }
 
 
@@ -185,6 +184,7 @@ public class PlayerController : MonoBehaviour
                 Rigidbody2D enemyRigdbody = hit.gameObject.GetComponent<Rigidbody2D>();
                 enemyRigdbody.AddForce(transform.right + transform.up * 2, ForceMode2D.Impulse);
                 hit.gameObject.GetComponent<Mimic>().TakeDamageMimic(); 
+                SoundManager.instance.PlaySFX(_audioSourcePlayer, SoundManager.instance.swordAttack[Random.Range(0, SoundManager.instance.swordAttack.Length)]);
             }
         }
 
@@ -225,6 +225,7 @@ public class PlayerController : MonoBehaviour
     {
         characterAnimator.SetTrigger("IsDead");
         Destroy(gameObject, 0.45f);
+        GameManager.instance.SceneLoader("Game Over");
     }
 
     void OnCollisionEnter2D(Collision2D collision)

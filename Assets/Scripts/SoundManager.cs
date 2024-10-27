@@ -9,9 +9,10 @@ public class SoundManager : MonoBehaviour
     [HideInInspector] public AudioSource _audioSourceGlobal;
 
     public AudioClip coinAudio;
+    public AudioClip starAudio;
     public AudioClip jumpAudio;
     public AudioClip hurtAudio;
-
+    public AudioClip buttonAudio;
     public AudioClip mimicAudio;
     public AudioClip mimicLoopAudio;
     public AudioClip[] swordAttack;
@@ -28,7 +29,7 @@ public class SoundManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(gameObject);
-
+        
         _audioSourceGlobal = GetComponent<AudioSource>();
     }
 

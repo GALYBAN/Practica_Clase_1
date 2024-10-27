@@ -31,7 +31,7 @@ public class Mimic : MonoBehaviour
     void AttackMimic()
     {
         mimicAnimator.SetTrigger("Bite");
-        SoundManager.instance.PlaySFX(_audioSourceMimic, SoundManager.instance.mimicAudio);
+        SoundManager.instance.PlaySFX(SoundManager.instance._audioSourceGlobal, SoundManager.instance.mimicAudio);
     }
 
     public void TakeDamageMimic()

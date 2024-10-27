@@ -9,10 +9,12 @@ public class GameManager : MonoBehaviour
 
     public static GameManager instance;
     private int coins = 0;
-
+    public int starsWon = 0;
+    public int starsNeededToWin = 3;
 
     private bool isPaused;
     [SerializeField] GameObject _pauseCanvas;
+    [SerializeField] GameObject _victoryCanvas;
     [SerializeField] Text _coinText;
 
     [SerializeField] Slider _healthSlider;
@@ -22,7 +24,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        BGMManager.instance.PlayBGM(BGMManager.instance.BGAudioClip);
+        
     }
     void Awake()
     {
@@ -34,6 +36,7 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
+
 
         _pausePanelAnimator = _pauseCanvas.GetComponentInChildren<Animator>();
     }
@@ -73,6 +76,26 @@ public class GameManager : MonoBehaviour
         _coinText.text = coins.ToString();
     }    
 
+    public void AddStar()
+    {
+        starsWon++;
+        VerifyVictory();
+    }
+
+    public void VerifyVictory()
+    {
+        if(starsWon >= starsNeededToWin)
+        {
+            ActivateVictoryMenu();
+            Debug.Log("Ganaste");
+        }
+    }
+
+    public void ActivateVictoryMenu()
+    {
+        _victoryCanvas.SetActive(true);
+    }
+
     public void SetHealthBar(int maxHealth)
     {
         _healthSlider.maxValue = maxHealth;
@@ -92,6 +115,12 @@ public class GameManager : MonoBehaviour
     public void SceneLoader(string sceneName)
     {
         SceneManager.LoadScene(sceneName);
+        Time.timeScale = 1;
+    }
+
+    public void ButtonOnClick()
+    {
+        SoundManager.instance.PlaySFX(SoundManager.instance._audioSourceGlobal, SoundManager.instance.buttonAudio);
     }
 
     /*float progresoDeCarga;
